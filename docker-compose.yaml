@@ -1,0 +1,29 @@
+version: '3.7'
+services:
+        flask-app:
+                build: ./flask-app
+                container_name: flask-trio-app
+                ports:
+                        - target: 5000
+                          published: 5000
+                          protocol: tcp
+                environment:
+                        USERNAME: ${MYSQL_USERNAME}
+                        PASSWORD: ${MYSQL_PASSWORD}
+                depends_on:
+                        - mysql
+        nginx:
+                image: nginx:latest
+                ports:
+                        - target: 80
+                          published: 80
+                          protocol: tcp
+        mysql:
+                image: mysql:5.7
+                container_name: mysql
+                ports:
+                        - target: 3306
+                          published: 3306
+                environment:
+                        MYSQL_ROOT_PASSWORD: root
+                        MYSQL_DATABASE: flask-db
